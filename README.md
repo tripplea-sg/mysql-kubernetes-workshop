@@ -27,4 +27,14 @@ Observe pods running on cluster1 and cluster2, skupper link between namespaces, 
 ```
 ./check-ic-east-west.sh
 ```
+### A.6. Test using cluster1
+Switch to cluster1 anytime by running this script
+```
+./east_cluster.sh 
+```
+### A.7. Test using cluster2
+Switch to cluster2 anytime by running this script
+```
+./west_cluster.sh
+```
 
