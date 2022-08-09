@@ -56,4 +56,23 @@ spec:
   router:
     instances: 1
 ```
-
+Observe tmp/west-cluster.yaml below to deploy InnoDB Cluster on cluster2
+```
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mycluster-east
+  namespace: west-cluster
+spec:
+  secretName: mypwds
+  tlsUseSelfSigned: true
+  baseServerId: 100
+  instances: 3
+  router:
+    instances: 1
+```
+Apply yaml file using kubectl, or simply use the following script:
+```
+./deploy-cluster-east.sh
+./deploy-cluster-west.sh
+```
