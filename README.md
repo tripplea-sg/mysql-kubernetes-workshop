@@ -1,5 +1,8 @@
 # MySQL InnoDB Cluster on Kubernetes Workshop
 
+## Prep: Install VM on OCI with minikube and PodMan
+Refer to the following online reference: https://docs.oracle.com/en/learn/ol-minikube/index.html#for-more-information 
+
 ## A. Build Kubernetes Environment
 ### A.1. Deploy minikube
 Login to your VM and run the following script to deploy a minikube with 2 Clusters (cluster1, cluster2)
