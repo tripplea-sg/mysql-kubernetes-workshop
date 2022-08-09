@@ -72,6 +72,14 @@ spec:
   router:
     instances: 1
 ```
+Observe the following command to deploy a secret for MySQL server root password 
+```
+./east_cluster.sh
+kubectl create secret generic mypwds --from-literal=rootUser=root --from-literal=rootHost=% --from-literal=rootPassword="root"
+
+./west_cluster.sh
+kubectl create secret generic mypwds --from-literal=rootUser=root --from-literal=rootHost=% --from-literal=rootPassword="root"
+```
 Apply yaml file using kubectl after switch to cluster1 for east-cluster and cluster2 for west-cluster, or simply use the following script:
 ```
 ./deploy-cluster-east.sh
