@@ -37,4 +37,20 @@ Switch to cluster2 anytime by running this script
 ```
 ./west_cluster.sh
 ```
+## B. Deploy InnoDB Cluster with MySQL Operator
+Observe tmp/east-cluster.yaml below to deploy InnoDB Cluster on cluster1
+```
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mycluster-east
+  namespace: east-cluster
+spec:
+  secretName: mypwds
+  tlsUseSelfSigned: true
+  baseServerId: 1000
+  instances: 3
+  router:
+    instances: 1
+```
 
