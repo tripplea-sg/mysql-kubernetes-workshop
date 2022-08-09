@@ -96,3 +96,49 @@ Or, simply run the following script to get overall status:
 ```
 ./check-ic-east-west.sh
 ```
+## C. Scaling Up InnoDB Cluster with MySQL Operator
+Scaling up east-cluster into 5 MySQL servers and 2 MySQL Routers
+```
+./east_cluster.sh
+kubectl edit ic mycluster-east
+```
+Change instances to 5 and router.instances to 2; save with :wq to commit. </br>
+Monitor the deployment using the following script:
+```
+./check-ic-east-west.sh
+```
+Check MySQL InnoDB Cluster (mycluster-east):
+```
+./east_cluster.sh
+kubectl exec -it mycluster-east-0 -- mysqlsh root:root@localhost:3306 -- cluster status
+kubectl exec -it mycluster-east-0 -- mysqlsh root:root@localhost:3306 -- cluster listRouters
+```
+Check MySQL InnoDB Cluster (mycluster-west):
+```
+./west_cluster.sh
+kubectl exec -it mycluster-west-0 -- mysqlsh root:root@localhost:3306 -- cluster status
+kubectl exec -it mycluster-west-0 -- mysqlsh root:root@localhost:3306 -- cluster listRouters
+```
+## D. Scaling Down InnoDB Cluster with MySQL Operator
+```
+./east_cluster.sh
+kubectl apply -f tmp/east-cluster.yaml
+```
+Check progress using the following script
+```
+./check-ic-east-west.sh
+./east_cluster.sh
+kubectl exec -it mycluster-east-0 -- mysqlsh root:root@localhost:3306 -- cluster status
+kubectl exec -it mycluster-west-0 -- mysqlsh root:root@localhost:3306 -- cluster listRouters
+```
+Remove unused PVC
+```
+kubectl get pvc
+kubectl delete pvc datadir-mycluster-east-4
+kubectl delete pvc datadir-mycluster-east-3
+```
+
+
+
+
+
