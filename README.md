@@ -1,7 +1,8 @@
 # MySQL InnoDB Cluster on Kubernetes Workshop
 
 ## Prep: Install VM on OCI with minikube and PodMan
-Refer to the following online reference: https://docs.oracle.com/en/learn/ol-minikube/index.html#for-more-information 
+Refer to the following online reference: https://docs.oracle.com/en/learn/ol-minikube/index.html#for-more-information </br>
+Install kubectl tool: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
 ## A. Build Kubernetes Environment
 ### A.1. Deploy minikube
@@ -71,8 +72,19 @@ spec:
   router:
     instances: 1
 ```
-Apply yaml file using kubectl, or simply use the following script:
+Apply yaml file using kubectl after switch to cluster1 for east-cluster and cluster2 for west-cluster, or simply use the following script:
 ```
 ./deploy-cluster-east.sh
 ./deploy-cluster-west.sh
+```
+Monitor InnoDB Cluster creation (3 MySQL servers + 1 Router) on cluster1 and cluster2 by using the following:
+```
+./east_cluster.sh
+kubectl get ic
+./west_cluster.sh
+kubectl get ic
+```
+Or, simply run the following script to get overall status:
+```
+./check-ic-east-west.sh
 ```
