@@ -137,7 +137,78 @@ kubectl get pvc
 kubectl delete pvc datadir-mycluster-east-4
 kubectl delete pvc datadir-mycluster-east-3
 ```
-
+## E. Backup InnoDB Cluster with MySQL Operator
+Observe the following yaml to create backup pvc
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: myexample-pv
+  namespace: east-cluster
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /tmp
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myexample-pvc
+  namespace: east-cluster
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+```
+Apply the yaml to deploy PVC
+```
+./east_cluster.sh
+kubectl apply -f tmp/backup-pvc-east.yaml
+kubectl get pv
+kubectl get pvc
+```
+Observe the following yaml to modify mycluster-east to have a backup profile:
+```
+apiVersion: mysql.oracle.com/v2
+kind: InnoDBCluster
+metadata:
+  name: mycluster-east
+  namespace: east-cluster
+spec:
+  secretName: mypwds
+  tlsUseSelfSigned: true
+  baseServerId: 1000
+  instances: 3
+  router:
+    instances: 1
+  backupProfiles:       
+  - name: myfancyprofile  # Embedded backup profile
+    dumpInstance:         # MySQL Shell Dump
+      storage:
+        persistentVolumeClaim:
+          claimName: myexample-pvc # store to this pre-existing PVC
+      backupSchedules:
+        - name: mygreatschedule
+          schedule: "0 0 * * *" # Daily, at midnight
+          backupProfileName:  myfancyprofile # reference the desired backupProfiles's name 
+          enabled: true # backup schedules can be temporarily disabled
+  ```
+  Apply the yaml using kubectl
+  ```
+  ./east_cluster.sh
+  kubectl apply -f tmp/east-cluster-with-backup.yaml
+  ./check-ic-east-west.sh
+  ```
+  
 
 
 
