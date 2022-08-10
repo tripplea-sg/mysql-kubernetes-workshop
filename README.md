@@ -225,7 +225,14 @@ kubectl apply -f tmp/cluster-east-one-off-backup.yaml
 kubectl get mysqlbackup
 ```
 ## F. Create InnoDB ClusteSet with MySQL Operator
-
+Run the following script to install ClusterSet on mycluster-east
+```
+./make_clusterset_east.sh
+```
+Run the following script to install ReplicaCluster on mycluster-west
+```
+./make_replicacluster_west.sh 
+```
 
 
 
