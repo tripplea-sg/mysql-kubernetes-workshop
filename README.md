@@ -208,7 +208,23 @@ spec:
   kubectl apply -f tmp/east-cluster-with-backup.yaml
   ./check-ic-east-west.sh
   ```
-  
+  Observe the following YAML for one-off backup
+  ```
+  apiVersion: mysql.oracle.com/v2
+kind: MySQLBackup
+metadata:
+    name: a-cool-one-off-backup
+    namespace: east-cluster
+spec:
+  clusterName: mycluster-east
+  backupProfileName: myfancyprofile
+```
+Run One off backup
+```
+kubectl apply -f tmp/cluster-east-one-off-backup.yaml 
+kubectl get mysqlbackup
+```
+
 
 
 
