@@ -224,6 +224,7 @@ Run One off backup
 kubectl apply -f tmp/cluster-east-one-off-backup.yaml 
 kubectl get mysqlbackup
 ```
+## F. Create InnoDB ClusteSet with MySQL Operator
 
 
 
